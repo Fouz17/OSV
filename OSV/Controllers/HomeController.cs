@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OSV.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +9,10 @@ namespace OSV.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly DB _DB = new DB();
         public ActionResult Index()
         {
+            var x = _DB.tblOMRDatas.First();
             return View();
         }
 
