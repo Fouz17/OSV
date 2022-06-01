@@ -3,6 +3,7 @@
 }
 
 
+
 <div class="page-bar">
     <ul class="page-breadcrumb">
     </ul>
@@ -43,7 +44,13 @@
 
     <div class="col-md-3">
         <label>Roll No</label>
-        <input id="Roll_no" class="form-control" value="9021907" placeholder="Enter Roll No" />
+        <select class="form-control" id="Roll_no">
+            <option selected disabled="disabled">Select</option>
+            @foreach (var item in ViewBag.RollNumbers)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
     </div>
 
     <div class="col-md-3">
@@ -90,7 +97,7 @@
             let Roll_No = $("#Roll_no").val();
 
             $.ajax({
-                url: "SheetView/GetSheet",
+                url: "GetSheet",
                 data: {
                     paperCode: PaperCode,
                     centerCode: CenterCode,
@@ -121,3 +128,4 @@
 <script>
     $(document).ready(fetchSheets());
 </script>
+

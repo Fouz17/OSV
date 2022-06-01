@@ -1,6 +1,7 @@
 ﻿using OSV.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Linq.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,11 +16,40 @@ namespace OSV.Controllers
         // GET: SheetView
         public ActionResult Index()
         {
-            TempData["PaperCode"] = 0;
-            List<string> paperCodes = db.tblPaperMasters.Select(s => s.PaperCode).Distinct().ToList();
-            ViewBag.PaperCodes = paperCodes;
-            List<string> Centers = db.tblOMRDatas.Select(x => x.CenterCode).Distinct().ToList();
-            ViewBag.Centers = Centers;
+            try
+            {
+                List<string> paperCodes = db.tblPaperMasters.Select(s => s.PaperCode).Distinct().ToList();
+                ViewBag.PaperCodes = paperCodes;
+                List<string> Centers = db.tblOMRDatas.Select(x => x.CenterCode).Distinct().ToList();
+                ViewBag.Centers = Centers;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                ViewBag.PaperCodes = new List<string>();
+                ViewBag.Centers = new List<string>();
+            }
+            return View();
+        }
+
+        public ActionResult UndetectedNumbers()
+        {
+            try
+            {
+                List<string> paperCodes = db.tblPaperMasters.Select(s => s.PaperCode).Distinct().ToList();
+                ViewBag.PaperCodes = paperCodes;
+                List<string> Centers = db.tblOMRDatas.Select(x => x.CenterCode).Distinct().ToList();
+                ViewBag.Centers = Centers;
+                List<string> RollNumbers = db.tblOMRDatas.Where(x => x.RollNo.Contains("X")).Select(x => x.RollNo).ToList();
+                ViewBag.RollNumbers = RollNumbers;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                ViewBag.PaperCodes = new List<string>();
+                ViewBag.Centers = new List<string>();
+                ViewBag.RollNumbers = new List<string>();
+            }
             return View();
         }
 
