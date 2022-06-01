@@ -12,7 +12,6 @@ namespace OSV.Controllers
         private readonly DB _DB = new DB();
         public ActionResult Index()
         {
-            var x = _DB.tblOMRDatas.First();
             return View();
         }
 

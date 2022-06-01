@@ -6,6 +6,16 @@
     <edmx:StorageModels>
     <Schema Namespace="OSV_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
+warning 6002: The table/view 'emarking_dev.dbo.Centers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Centers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CenterCode" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'emarking_dev.dbo.tblOMRData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tblOMRData">
           <Key>
@@ -22,6 +32,22 @@ warning 6002: The table/view 'emarking_dev.dbo.tblOMRData' does not have a prima
           <Property Name="MarksDetail" Type="text" />
           <Property Name="AnswersDetail" Type="text" />
         </EntityType>
+        <EntityType Name="tblPaperMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EducationLevelID" Type="int" Nullable="false" />
+          <Property Name="SubjectID" Type="int" Nullable="false" />
+          <Property Name="SyllabusYear" Type="int" Nullable="false" />
+          <Property Name="PaperYear" Type="int" Nullable="false" />
+          <Property Name="PaperCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EntryDate" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="PaperTypeId" Type="int" Nullable="false" />
+          <Property Name="PrioirtyRollNoStartsWith" Type="varchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="UserID" />
@@ -35,7 +61,15 @@ warning 6002: The table/view 'emarking_dev.dbo.tblOMRData' does not have a prima
           <Property Name="IsUser" Type="bit" />
         </EntityType>
         <EntityContainer Name="OSV_ModelStoreContainer">
+          <EntitySet Name="tblPaperMaster" EntityType="Self.tblPaperMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Centers" EntityType="Self.Centers" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Centers].[id] AS [id], 
+    [Centers].[CenterCode] AS [CenterCode], 
+    [Centers].[Type] AS [Type]
+    FROM [dbo].[Centers] AS [Centers]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="tblOMRData" EntityType="Self.tblOMRData" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tblOMRData].[id] AS [id], 
@@ -73,6 +107,8 @@ warning 6002: The table/view 'emarking_dev.dbo.tblOMRData' does not have a prima
         <EntityContainer Name="DB" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tblOMRDatas" EntityType="Self.tblOMRData" />
           <EntitySet Name="Users" EntityType="OSV_Model.User" />
+          <EntitySet Name="tblPaperMasters" EntityType="OSV_Model.tblPaperMaster" />
+          <EntitySet Name="Centers" EntityType="OSV_Model.Center" />
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -85,6 +121,30 @@ warning 6002: The table/view 'emarking_dev.dbo.tblOMRData' does not have a prima
           <Property Name="isAdmin" Type="Boolean" Nullable="false" />
           <Property Name="deleted" Type="Boolean" Nullable="false" />
           <Property Name="IsUser" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tblPaperMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EducationLevelID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <Property Name="SyllabusYear" Type="Int32" Nullable="false" />
+          <Property Name="PaperYear" Type="Int32" Nullable="false" />
+          <Property Name="PaperCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="PaperTypeId" Type="Int32" Nullable="false" />
+          <Property Name="PrioirtyRollNoStartsWith" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Center">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CenterCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -118,6 +178,32 @@ warning 6002: The table/view 'emarking_dev.dbo.tblOMRData' does not have a prima
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPaperMasters">
+            <EntityTypeMapping TypeName="OSV_Model.tblPaperMaster">
+              <MappingFragment StoreEntitySet="tblPaperMaster">
+                <ScalarProperty Name="PrioirtyRollNoStartsWith" ColumnName="PrioirtyRollNoStartsWith" />
+                <ScalarProperty Name="PaperTypeId" ColumnName="PaperTypeId" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="PaperCode" ColumnName="PaperCode" />
+                <ScalarProperty Name="PaperYear" ColumnName="PaperYear" />
+                <ScalarProperty Name="SyllabusYear" ColumnName="SyllabusYear" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="EducationLevelID" ColumnName="EducationLevelID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Centers">
+            <EntityTypeMapping TypeName="OSV_Model.Center">
+              <MappingFragment StoreEntitySet="Centers">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CenterCode" ColumnName="CenterCode" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

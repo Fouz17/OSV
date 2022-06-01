@@ -27,5 +27,7 @@ namespace OSV.Models
     
         public virtual DbSet<tblOMRData> tblOMRDatas { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<tblPaperMaster> tblPaperMasters { get; set; }
+        public virtual DbSet<Center> Centers { get; set; }
     }
 }

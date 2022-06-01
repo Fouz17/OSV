@@ -7,6 +7,8 @@
       <Diagram DiagramId="b123f7ac7ed84142a73ea90e17a482cc" Name="Diagram1">
         <EntityTypeShape EntityType="OSV_Model.tblOMRData" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OSV_Model.User" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="OSV_Model.tblPaperMaster" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="OSV_Model.Center" Width="1.5" PointX="2.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
