@@ -89,13 +89,10 @@
                 <thead>
                     <tr>
                         <th>Q.NO</th>
-                        <th>Part</th>
-                        <th>Not Attempted</th>
                         <th>Marks</th>
-                        <th>Out of</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="MCQ_Marks">
                 </tbody>
             </table>
             <input id="cmdSubmit" type="submit" class="btn btn-info" value="Submit" disabled="disabled" />
@@ -116,15 +113,22 @@
                 data: {
                     paperCode: PaperCode,
                     centerCode: CenterCode,
-                    RollNo:Roll_No
+                    RollNo: Roll_No
                 },
                 success: res => {
                     $("#Sheetbody").empty();
-                    res.map((d, i) => {
-                        console.log("data:image/png;base64," + d)
+                    let details = JSON.parse(res.MarksDetail);
+                    $("#MCQ_Marks").empty();
+                    Object.keys(details).sort().map((d, i) => {
+                        if(d[0] == "Q"){
+                            $("#MCQ_Marks").append(`<tr><td>${d}</td><td>${details[d]}</td></tr>`)
+                        }
+                    })
+                    res.Files.map((d, i) => {
                         var image = new Image();
                         image.src = 'data:image/jpeg;base64,' + d;
                         $("#Sheetbody").append(image);
+                        $("#Sheetbody").append("<br/>");
                     })
                 }
             })

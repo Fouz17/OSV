@@ -26,21 +26,21 @@ namespace OSV.Controllers
         // GET: SheetView/GetSheet?5
         public JsonResult GetSheet(string paperCode, string centerCode, string RollNo)
         {
-            var filename = db.tblOMRDatas
+            var detail = db.tblOMRDatas
                 .Where(x => x.CenterCode == centerCode && x.PaperCode == paperCode && x.RollNo == RollNo)
-                .Select(s => new { s.FirstPageFile, s.SecondPageFile }).FirstOrDefault();
-            if (filename != null)
+                .Select(s => new { s.FirstPageFile, s.SecondPageFile, s.MarksDetail }).FirstOrDefault();
+            if (detail != null)
             {
-                string path1 = $"{paperCode}/{centerCode}/{filename.FirstPageFile}";
-                string path2 = $"{paperCode}/{centerCode}/{filename.SecondPageFile}";
+                string path1 = $"{paperCode}/{centerCode}/{detail.FirstPageFile}";
+                string path2 = $"{paperCode}/{centerCode}/{detail.SecondPageFile}";
 
                 List<string> Files = new List<string>
-            {
-                GetBase64(path1),
-                GetBase64(path2)
-            };
+                {
+                    GetBase64(path1),
+                    GetBase64(path2)
+                };
 
-                return Json(Files, JsonRequestBehavior.AllowGet);
+                return Json(new { Files, detail.MarksDetail }, JsonRequestBehavior.AllowGet);
             }
             return Json(new List<string>(), JsonRequestBehavior.AllowGet);
         }
@@ -61,10 +61,10 @@ namespace OSV.Controllers
                         {
                             int imageWidth = 700;
                             int imageHeight = (int)((float)image.Height / (float)image.Width * imageWidth);
-                            Image resizedImage = new Bitmap(imageWidth, imageHeight + 15);
+                            Image resizedImage = new Bitmap(imageWidth, imageHeight);
 
                             Graphics gfx = Graphics.FromImage(resizedImage);
-                            gfx.DrawImage(image, 0, 15, imageWidth, imageHeight - 15);
+                            gfx.DrawImage(image, 0, 0, imageWidth, imageHeight);
                             using (MemoryStream msResized = new MemoryStream())
                             {
                                 resizedImage.Save(msResized, System.Drawing.Imaging.ImageFormat.Jpeg);
