@@ -63,6 +63,8 @@ namespace OSV.Controllers
                             int imageHeight = (int)((float)image.Height / (float)image.Width * imageWidth);
                             Image resizedImage = new Bitmap(imageWidth, imageHeight + 15);
 
+                            Graphics gfx = Graphics.FromImage(resizedImage);
+                            gfx.DrawImage(image, 0, 15, imageWidth, imageHeight - 15);
                             using (MemoryStream msResized = new MemoryStream())
                             {
                                 resizedImage.Save(msResized, System.Drawing.Imaging.ImageFormat.Jpeg);

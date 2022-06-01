@@ -119,6 +119,7 @@
                     RollNo:Roll_No
                 },
                 success: res => {
+                    $("#Sheetbody").empty();
                     res.map((d, i) => {
                         console.log("data:image/png;base64," + d)
                         var image = new Image();
